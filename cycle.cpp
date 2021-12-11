@@ -157,3 +157,7 @@ int main()
 
     return 0;
 }
+
+void deleteAll(Node* root) {
+
+}
