@@ -136,8 +136,8 @@ bool isCycle(Node *root)
         }
     }
     bool temp = isCycle(root->left) || isCycle(root->right);
-    // delete the temporary pointer
-    root->parent = nullptr;
+    // reset the parent pointer of the root node to nullptr
+    if (root->parent == root->right || root->parent == root->left) root->parent = nullptr;
     return temp;
 }
 
