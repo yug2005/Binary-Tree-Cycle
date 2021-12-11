@@ -85,14 +85,10 @@ bool isCycle(Node* root){
 
 bool isCycle(Node *root)
 {
-    if (!root)
-    {
-        return false;
-    }
-    // if we are in a node with no parent, that must mean we are in the root node
-    if (!root->parent)
-    {
-        // give the root node a temporary parent
+    if (!root) return false;
+
+    if (!root->parent) { // if we are in a node with no parent, 
+                         //that must mean we are in the root node.
          
         root->parent = new Node(root->data);
         if (root->left) root->left->parent = root;
@@ -103,14 +99,13 @@ bool isCycle(Node *root)
         Node* currParent;
         Node* tptr = root;
 
-        while (tptr) {
+        while (tptr) { //deleting all parent pointers
             if (tptr->left && tptr->left->parent == tptr) {
                 tptr = tptr->left;
             } else if (tptr->right && tptr->right->parent == tptr) {
                 tptr = tptr->right;
             } else if (tptr != root) {
                 currParent = tptr->parent;
-                cout << "tptr: " << tptr->data << endl; 
                 tptr->parent = nullptr;
                 tptr = currParent;
             } else {
@@ -118,37 +113,18 @@ bool isCycle(Node *root)
             }
         }
 
-        delete root->parent;
+        delete root->parent; // delete root's temp parent
         return temp;
     }
-    if (root->left)
-    {
-        if (!root->left->parent)
-        {
-            // parent does not exist so initialize to the current node
-            root->left->parent = root;
-        }
-        else
-        {
-            // parent already exists so there is a cycle
-            return true;
-        }
+    if (root->left) {
+        if (!root->left->parent) root->left->parent = root; // parent does not exist, set parent to current Node
+        else return true; // parent already exists so there is a cycle
     }
-    if (root->right)
-    {
-        if (!root->right->parent)
-        {
-            // parent does not exist so intialize to the current node
-            root->right->parent = root;
-        }
-        else
-        {
-            // parent already exists so there is a cycle
-            return true;
-        }
+    if (root->right) {
+        if (!root->right->parent) root->right->parent = root; // parent does not exist, set parent to current Node
+        else return true; // parent already exists so there is a cycle
     }
     return isCycle(root->left) || isCycle(root->right);
-    // reset the parent pointer of the root node to nullptr
 }
 
 int main()
