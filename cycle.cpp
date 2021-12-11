@@ -95,6 +95,8 @@ bool isCycle(Node *root)
         // give the root node a temporary parent
          
         root->parent = new Node(root->data);
+        if (root->left) root->left->parent = root;
+        if (root->right) root->right->parent = root;
 
         bool temp = isCycle(root->left) || isCycle(root->right);
 
@@ -102,9 +104,9 @@ bool isCycle(Node *root)
         Node* tptr = root;
 
         while (tptr) {
-            if (tptr->left && tptr->left->parent && tptr->left->parent == tptr) {
+            if (tptr->left && tptr->left->parent == tptr) {
                 tptr = tptr->left;
-            } else if (tptr->right && tptr->right->parent && tptr->right->parent == tptr) {
+            } else if (tptr->right && tptr->right->parent == tptr) {
                 tptr = tptr->right;
             } else if (tptr != root) {
                 currParent = tptr->parent;
