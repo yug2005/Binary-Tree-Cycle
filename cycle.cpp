@@ -182,5 +182,23 @@ int main()
 }
 
 void deleteAll(Node* root) {
+    Node* currParent;
+    Node* tptr = root;
+
+    while (tptr) {
+        if (tptr->left && tptr->left->parent && tptr->left->parent == tptr) {
+            tptr = tptr->left;
+        } else if (tptr->right && tptr->right->parent && tptr->right->parent == tptr) {
+            tptr = tptr->right;
+        } else if (tptr != root) {
+            currParent = tptr->parent;
+            tptr->parent = nullptr;
+            tptr = currParent;
+        } else {
+            break;
+        }
+    }
+
+    root->parent = nullptr;
 
 }
