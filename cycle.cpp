@@ -96,18 +96,12 @@ bool isCycle(Node *root)
         Node* rootTemporaryParent = new Node;
         root->parent = rootTemporaryParent;
 
-        bool temp = isCycle(root->left)
-        if (root->parent == root->right || root->parent == root->left) {
-            root->parent = nullptr;
+        bool temp = isCycle(root->left) || isCycle(root->right);
+        if (root->parent == rootTemporaryParent) {
             Node* c = root;
             while ()
         }
         return temp;
-    }
-    // if both right and left point to the same node, return true
-    if (root->right && root->left && root->right == root->left)
-    {
-        return true;
     }
     if (root->left)
     {
@@ -116,10 +110,8 @@ bool isCycle(Node *root)
             // parent does not exist so initialize to the current node
             root->left->parent = root;
         }
-        else if (root->left->parent != root)
+        else
         {
-            // reset the pointer to nullptr in case this is the root
-            root->left->parent = nullptr;
             // parent already exists so there is a cycle
             return true;
         }
@@ -131,10 +123,8 @@ bool isCycle(Node *root)
             // parent does not exist so intialize to the current node
             root->right->parent = root;
         }
-        else if (root->right->parent != root)
+        else
         {
-            // reset the pointer to nullptr in case this is the root
-            root->right->parent = nullptr;
             // parent already exists so there is a cycle
             return true;
         }
@@ -145,38 +135,25 @@ bool isCycle(Node *root)
 
 int main()
 {
-    Node *root = new Node(3);
+    Node *root = new Node(1);
+    Node* node1 = root;
 
-    root->right = new Node(1);
+    Node* node2 = new Node(2);
+    root->left = node2;
 
-    cout << boolalpha << isCycle(root) << endl;
+    Node* node3 = new Node(3);
+    root->right = node3;
 
-    // root->right = new Node(6);
-    // root->right->left = root->left;
+    Node* node4 = new Node(4);
+    node2->left = node4;
 
-    root->right->right = new Node(6);
-    root->right->right->right = root->right->right;
+    Node* node5 = new Node(5);
+    node2->right = node5;
 
-    // root->printVisitedList();
-
-    cout << boolalpha << isCycle(root) << endl;
-
-    // root->printVisitedList();
-
-    Node* temp = root->right->right;
-    root->right = new Node(2);
-    root->right->right = temp;
+    Node* node6 = new Node(6);
+    node3->right = node6;
 
     cout << boolalpha << isCycle(root) << endl;
-
-    // root->printVisitedList();
-
-    Node *newRoot = new Node(4);
-    newRoot->right = root;
-
-    cout << boolalpha << isCycle(newRoot) << endl;
-
-    cout << boolalpha << isCycle(newRoot) << endl;
 
     return 0;
 }
