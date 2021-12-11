@@ -145,23 +145,25 @@ int main()
 {
     Node *root = new Node(3);
 
-    root->left = new Node(1);
+    root->right = new Node(1);
 
     cout << boolalpha << isCycle(root) << endl;
 
-    root->right = new Node(6);
-    root->right->left = root->left;
+    // root->right = new Node(6);
+    // root->right->left = root->left;
 
-    // root->right->right = new Node(6);
-    // root->right->right->right = root->right;
-
-    // root->printVisitedList();
-
-    //cout << boolalpha << isCycle(root) << endl;
+    root->right->right = new Node(6);
+    root->right->right->right = root->right->right;
 
     // root->printVisitedList();
 
-    //root->insert(5);
+    cout << boolalpha << isCycle(root) << endl;
+
+    // root->printVisitedList();
+
+    Node* temp = root->right->right;
+    root->right = new Node(2); 
+    root->right->right = temp; 
 
     cout << boolalpha << isCycle(root) << endl;
 
