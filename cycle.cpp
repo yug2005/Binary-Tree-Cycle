@@ -110,7 +110,7 @@ bool isCycle(Node *root)
                 tptr = tptr->right;
             } else if (tptr != root) {
                 currParent = tptr->parent;
-                cout << "tptr: " << tptr->data << endl; 
+                //cout << "tptr: " << tptr->data << endl; 
                 tptr->parent = nullptr;
                 tptr = currParent;
             } else {
@@ -119,6 +119,7 @@ bool isCycle(Node *root)
         }
 
         delete root->parent;
+        root->parent = nullptr; 
         return temp;
     }
     if (root->left)
@@ -171,11 +172,21 @@ int main()
     Node* node6 = new Node(6);
     node3->right = node6;
 
-    //root->printPreOrder(); 
+    root->printPreOrder(); 
 
     cout << boolalpha << isCycle(root) << endl;
 
-    //root->printPreOrder(); 
+    node3->left = node5; 
+
+    root->printPreOrder(); 
+
+    cout << boolalpha << isCycle(root) << endl;
+
+    root->printPreOrder(); 
+    
+    node5->right = node2; 
+    node5->left = node4; 
+    node1->left = node5; 
 
     cout << boolalpha << isCycle(root) << endl;
 
