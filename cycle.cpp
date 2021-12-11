@@ -93,8 +93,8 @@ bool isCycle(Node *root)
     if (!root->parent)
     {
         // give the root node a temporary parent
-        Node* rootTemporaryParent = new Node;
-        root->parent = rootTemporaryParent;
+         
+        root->parent = new Node(root->data);
 
         bool temp = isCycle(root->left) || isCycle(root->right);
         deleteAll(root);
