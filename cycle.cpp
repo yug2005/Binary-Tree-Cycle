@@ -97,7 +97,26 @@ bool isCycle(Node *root)
         root->parent = new Node(root->data);
 
         bool temp = isCycle(root->left) || isCycle(root->right);
-        deleteAll(root);
+
+        Node* currParent;
+        Node* tptr = root;
+
+        while (tptr) {
+            if (tptr->left && tptr->left->parent && tptr->left->parent == tptr) {
+                tptr = tptr->left;
+            } else if (tptr->right && tptr->right->parent && tptr->right->parent == tptr) {
+                tptr = tptr->right;
+            } else if (tptr != root) {
+                currParent = tptr->parent;
+                cout << "tptr: " << tptr->data << endl; 
+                tptr->parent = nullptr;
+                tptr = currParent;
+            } else {
+                break;
+            }
+        }
+
+        delete root->parent;
         return temp;
     }
     if (root->left)
@@ -150,29 +169,14 @@ int main()
     Node* node6 = new Node(6);
     node3->right = node6;
 
+    //root->printPreOrder(); 
+
+    cout << boolalpha << isCycle(root) << endl;
+
+    //root->printPreOrder(); 
+
     cout << boolalpha << isCycle(root) << endl;
 
     return 0;
 }
 
-void deleteAll(Node* root) {
-    Node* currParent;
-    Node* tptr = root;
-
-    while (tptr) {
-        if (tptr->left && tptr->left->parent && tptr->left->parent == tptr) {
-            tptr = tptr->left;
-        } else if (tptr->right && tptr->right->parent && tptr->right->parent == tptr) {
-            tptr = tptr->right;
-        } else if (tptr != root) {
-            currParent = tptr->parent;
-            tptr->parent = nullptr;
-            tptr = currParent;
-        } else {
-            break;
-        }
-    }
-
-    delete root->parent;
-
-}
