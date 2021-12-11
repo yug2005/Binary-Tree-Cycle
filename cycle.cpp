@@ -6,11 +6,11 @@ using namespace std;
 /*
 bool isCycle(Node* root){
     if (!root) {return false;}
-    // deleting the list of visisted nodes 
+    // deleting the list of visisted nodes
     if (!root->visitedNodes){
         root->visitedNodes = new Node(root->data);
 
-        bool hasCycle = isCycle(root->left) || isCycle(root->right); 
+        bool hasCycle = isCycle(root->left) || isCycle(root->right);
 
         // deleting the linked list
         while (root->visitedNodes){
@@ -19,14 +19,14 @@ bool isCycle(Node* root){
             delete temp;
         }
 
-        return hasCycle; 
+        return hasCycle;
     }
     else {
         if ((root->right && root->right->data == root->visitedNodes->data) ||
         (root->left && root->left->data == root->visitedNodes->data))
-            return true; 
-        Node* c = root->visitedNodes; 
-        // searching the list for the new 
+            return true;
+        Node* c = root->visitedNodes;
+        // searching the list for the new
         while (c->right){
             if (c->data == root->data){
                 return true;
@@ -93,12 +93,16 @@ bool isCycle(Node *root)
     if (!root->parent)
     {
         // give the root node a temporary parent
-        if (root->left)
-            root->parent = root->left;
-        else if (root->right)
-            root->parent = root->right;
-        else
-            return false;
+        Node* rootTemporaryParent = new Node;
+        root->parent = rootTemporaryParent;
+
+        bool temp = isCycle(root->left)
+        if (root->parent == root->right || root->parent == root->left) {
+            root->parent = nullptr;
+            Node* c = root;
+            while ()
+        }
+        return temp;
     }
     // if both right and left point to the same node, return true
     if (root->right && root->left && root->right == root->left)
@@ -135,10 +139,8 @@ bool isCycle(Node *root)
             return true;
         }
     }
-    bool temp = isCycle(root->left) || isCycle(root->right);
+    return isCycle(root->left) || isCycle(root->right);
     // reset the parent pointer of the root node to nullptr
-    if (root->parent == root->right || root->parent == root->left) root->parent = nullptr;
-    return temp;
 }
 
 int main()
@@ -162,8 +164,8 @@ int main()
     // root->printVisitedList();
 
     Node* temp = root->right->right;
-    root->right = new Node(2); 
-    root->right->right = temp; 
+    root->right = new Node(2);
+    root->right->right = temp;
 
     cout << boolalpha << isCycle(root) << endl;
 
