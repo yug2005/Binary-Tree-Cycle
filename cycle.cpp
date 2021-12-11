@@ -97,10 +97,7 @@ bool isCycle(Node *root)
         root->parent = rootTemporaryParent;
 
         bool temp = isCycle(root->left) || isCycle(root->right);
-        if (root->parent == rootTemporaryParent) {
-            Node* c = root;
-            while ()
-        }
+        deleteAll(root);
         return temp;
     }
     if (root->left)
@@ -176,6 +173,6 @@ void deleteAll(Node* root) {
         }
     }
 
-    root->parent = nullptr;
+    delete root->parent;
 
 }
