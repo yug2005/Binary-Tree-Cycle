@@ -3,6 +3,96 @@ using namespace std;
 
 #include "Node.h"
 
+// Parent Node Implementation : Time Complexity O(n)
+bool isCycle(Node *root)
+{
+    if (!root) return false;
+    // if we are in a node with no parent, that must mean we are in the root node
+    if (!root->parent)
+    {
+        // give the root node a temporary parent
+        root->parent = new Node; 
+        // recursively call the function 
+        bool temp = isCycle(root->left) || isCycle(root->right); 
+        // deleting all parent pointers before returning
+        Node* c = root;
+        while (c)
+        {
+            if (c->left && c->left->parent == c) c = c->left; 
+            else if (c->right && c->right->parent == c) c = c->right; 
+            else if (c == root) break; 
+            else {
+                Node* currentParent = c->parent; 
+                c = c->parent; 
+                currentParent = nullptr; 
+                delete currentParent; 
+            }
+        }
+        return temp;
+    }
+    if (root->left)
+    {
+        // parent does not exist so initialize to the current node
+        if (!root->left->parent) root->left->parent = root; 
+        // parent already exists so there is a cycle
+        else return true;
+    }
+    if (root->right)
+    {
+        // parent does not exist so intialize to the current node
+        if (!root->right->parent) root->right->parent = root;
+        // parent already exists so there is a cycle
+        else return true;
+    }
+    return isCycle(root->left) || isCycle(root->right);
+}
+
+int main()
+{
+    // creating a test binary tree
+    Node *root = new Node(1);
+    Node* node1 = root;
+
+    Node* node2 = new Node(2);
+    root->left = node2;
+
+    Node* node3 = new Node(3);
+    root->right = node3;
+
+    Node* node4 = new Node(4);
+    node2->left = node4;
+
+    Node* node5 = new Node(5);
+    node2->right = node5;
+
+    Node* node6 = new Node(6);
+    node3->right = node6;
+
+    // printing the tree in preorder
+    root->printPreOrder(); 
+
+    cout << boolalpha << isCycle(root) << endl;
+
+    // creating a cycle in the binary tree
+    node3->left = node5; 
+
+    root->printPreOrder(); 
+
+    cout << boolalpha << isCycle(root) << endl;
+
+    root->printPreOrder(); 
+
+    // changing the binary tree
+    node5->right = node2; 
+    node5->left = node4; 
+    node1->left = node5; 
+
+    cout << boolalpha << isCycle(root) << endl;
+
+    return 0;
+}
+
+// Visited Nodes list implementation : Time Complexity O(n^2)
 /*
 bool isCycle(Node* root){
     if (!root) {return false;}
@@ -38,132 +128,3 @@ bool isCycle(Node* root){
     }
 }
 */
-
-// bool isCycle(Node* root)
-// {
-//     if (!root) {return false;}
-//     if (!root->parent){
-//         if (root->left) root->parent = root->left;
-//         else if (root->right) root->parent = root->right;
-//         else return false;
-//     }
-//     // if both right and left point to the same node
-//     if (root->right && root->left && root->right == root->left){
-//         return true;
-//     }
-//     if (root->left){
-//         cout << "checking the left node" << endl;
-//         if(!root->left->parent){
-//             cout << "initializing parent" << endl;
-//             root->left->parent = root;
-//         }
-//         else if (root->left->parent != root){
-//             cout << "parent already exists so there is a cycle" << endl;
-//             return true;
-//         }
-//         else {
-//             cout << "the left node already has the correct parent" << endl;
-//         }
-//     }
-//     if (root->right){
-//         cout << "checking the right node" << endl;
-//         if(!root->right->parent){
-//             // parent does not exist
-//             cout << "initializing parent" << endl;
-//             root->right->parent = root;
-//         }
-//         else if (root->right->parent != root){
-//             cout << "parent already exists so there is a cycle" << endl;
-//             return true;
-//         }
-//         else {
-//             cout << "the right node already has the correct parent" << endl;
-//         }
-//     }
-//     return isCycle(root->left) || isCycle(root->right);
-// }
-
-bool isCycle(Node *root)
-{
-    if (!root) return false;
-    if (!root->parent) { // if we are in a node with no parent, 
-                         //that must mean we are in the root node.
-        root->parent = new Node(root->data);
-        if (root->left) root->left->parent = root;
-        if (root->right) root->right->parent = root;
-
-        bool temp = isCycle(root->left) || isCycle(root->right);
-
-        Node* currParent;
-        Node* tptr = root;
-
-        while (tptr) { //deleting all parent pointers
-            if (tptr->left && tptr->left->parent == tptr) {
-                tptr = tptr->left;
-            } else if (tptr->right && tptr->right->parent == tptr) {
-                tptr = tptr->right;
-            } else if (tptr != root) {
-                currParent = tptr->parent;
-                tptr->parent = nullptr;
-                tptr = currParent;
-            } else {
-                break;
-            }
-        }
-
-        delete root->parent;
-        root->parent = nullptr; 
-        return temp;
-    }
-    if (root->left) {
-        if (!root->left->parent) root->left->parent = root; // parent does not exist, set parent to current Node
-        else return true; // parent already exists so there is a cycle
-    }
-    if (root->right) {
-        if (!root->right->parent) root->right->parent = root; // parent does not exist, set parent to current Node
-        else return true; // parent already exists so there is a cycle
-    }
-    return isCycle(root->left) || isCycle(root->right);
-}
-
-int main()
-{
-    Node *root = new Node(1);
-    Node* node1 = root;
-
-    Node* node2 = new Node(2);
-    root->left = node2;
-
-    Node* node3 = new Node(3);
-    root->right = node3;
-
-    Node* node4 = new Node(4);
-    node2->left = node4;
-
-    Node* node5 = new Node(5);
-    node2->right = node5;
-
-    Node* node6 = new Node(6);
-    node3->right = node6;
-
-    root->printPreOrder(); 
-
-    cout << boolalpha << isCycle(root) << endl;
-
-    node3->left = node5; 
-
-    root->printPreOrder(); 
-
-    cout << boolalpha << isCycle(root) << endl;
-
-    root->printPreOrder(); 
-
-    node5->right = node2; 
-    node5->left = node4; 
-    node1->left = node5; 
-
-    cout << boolalpha << isCycle(root) << endl;
-
-    return 0;
-}
-
